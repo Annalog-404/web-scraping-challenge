@@ -16,7 +16,10 @@ Latest Chromium
 Airflow
 
 ## Usage
-
+Update the command at ./app/Console/Commands/ScrapeData.php
 ```bash
 php artisan scrape:data
+```
+```bash
+chromedriver --port=4444
 ```
