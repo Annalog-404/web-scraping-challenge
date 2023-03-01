@@ -73,6 +73,7 @@ class ScrapeData extends Command
         while($current_page <= $max_pages)
         {
             $current_url = $updated_url.'&page='.$current_page;
+            $driver->get($current_url);
             
             $application_el = $driver->findElements(WebDriverBy::xpath('//*[@id="ctl00_ctl59_g_32449bb4_2103_48cc_ac44_8e240d2b040d"]/div/table/tbody/tr/td[1]/a'));
             $received_el = $driver->findElements(WebDriverBy::xpath('//*[@id="ctl00_ctl59_g_32449bb4_2103_48cc_ac44_8e240d2b040d"]/div/table/tbody/tr/td[2]'));
