@@ -7,6 +7,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 class ScrapeData extends Command
 {
@@ -64,17 +65,16 @@ class ScrapeData extends Command
         $search_btn = $driver->findElement(WebDriverBy::id('ctl00_ctl59_g_283dc50f_625f_49b8_bb9f_204344be6268_btniCompasSearchDateRange'));
         $search_btn->click();
 
-        $max_pages = 5;
         $current_page = 1;
         $planningPermitData = [];
 
         $updated_url = $driver->getCurrentURL();
 
-        while($current_page <= $max_pages)
+        while (True)
         {
             $current_url = $updated_url.'&page='.$current_page;
             $driver->get($current_url);
-            
+
             $application_el = $driver->findElements(WebDriverBy::xpath('//*[@id="ctl00_ctl59_g_32449bb4_2103_48cc_ac44_8e240d2b040d"]/div/table/tbody/tr/td[1]/a'));
             $received_el = $driver->findElements(WebDriverBy::xpath('//*[@id="ctl00_ctl59_g_32449bb4_2103_48cc_ac44_8e240d2b040d"]/div/table/tbody/tr/td[2]'));
             $address_el = $driver->findElements(WebDriverBy::xpath('//*[@id="ctl00_ctl59_g_32449bb4_2103_48cc_ac44_8e240d2b040d"]/div/table/tbody/tr/td[3]'));
@@ -93,8 +93,13 @@ class ScrapeData extends Command
                 array_push($planningPermitData, $temp_data);
             }
 
-            sleep(10);
-            $current_page += 1;
+            try {
+                $nxt_btn = $driver->findElement(WebDriverBy::linkText('[Next >>]'));
+                sleep(10);
+                $current_page += 1;
+            } catch (NoSuchElementException $e) {
+                break;
+            }
         }
 
         print_r($planningPermitData);
