@@ -1,6 +1,6 @@
 # Web Scraping
 
-Landchecker Coding Challenge
+Coding Challenge
 
 ## Installation
 Laravel
